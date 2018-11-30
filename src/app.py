@@ -16,6 +16,7 @@ from resources.item import Item, ItemList
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["JWT_SECRET_KEY"] = "secretkeyboyz"
 
 api = Api(app)
