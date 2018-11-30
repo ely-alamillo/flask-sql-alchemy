@@ -12,6 +12,7 @@ from flask_jwt_extended import (
 
 from resources.user import UserRegister
 from resources.item import Item, ItemList
+from resources.store import Store, StoreList
 
 
 app = Flask(__name__)
@@ -52,8 +53,10 @@ class Auth(Resource):
         return {"access_token": access_token}, 200
 
 
+api.add_resource(Store, "/store/<string:name>")
 api.add_resource(Item, "/item/<string:name>")
 api.add_resource(ItemList, "/items")
+api.add_resource(StoreList, "/stores")
 api.add_resource(UserRegister, "/register")
 api.add_resource(Auth, "/auth")
 
