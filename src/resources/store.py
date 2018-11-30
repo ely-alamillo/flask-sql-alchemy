@@ -25,7 +25,7 @@ class Store(Resource):
             store.save_to_db()
         except:
             return {"message": "An error occured creatin the store"}, 500
-        return store.json, 201
+        return store.json(), 201
 
     def delete(self, name):
         store = StoreModel.find_by_name(name)
@@ -35,5 +35,5 @@ class Store(Resource):
 
 
 class StoreList(Resource):
-    def get(self, name):
+    def get(self):
         return {"stores": [store.json() for store in StoreModel.query.all()]}

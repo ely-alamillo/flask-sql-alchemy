@@ -21,6 +21,7 @@ class UserModel(db.Model):
     @classmethod
     def find_by_username(cls, username):
         user = cls.query.filter_by(username=username).first()
+        return user
 
     @classmethod
     def find_by_id(cls, _id):
