@@ -15,9 +15,11 @@ from resources.item import Item, ItemList
 
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["JWT_SECRET_KEY"] = "secretkeyboyz"
+
 api = Api(app)
 
-app.config["JWT_SECRET_KEY"] = "secretkeyboyz"
 
 jwt = JWTManager(app)
 
@@ -51,4 +53,8 @@ api.add_resource(UserRegister, "/register")
 api.add_resource(Auth, "/auth")
 
 if __name__ == "__main__":
+    from db import db
+
+    # set up db
+    db.init_app(app)
     app.run(port=5000, debug=True)
