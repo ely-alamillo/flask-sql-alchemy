@@ -15,44 +15,14 @@ class UserModel(db.Model):
         self.username = username
         self.password = password
 
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
     @classmethod
     def find_by_username(cls, username):
-        connection = sqlite3.connect("data.db")
-        cursor = connection.cursor()
-
-        query = "SELECT * FROM users WHERE username=?"
-        # value always needs to be a tuple
-        # otherwise braces are useless
-        # (4 + 3) + 2
-        result = cursor.execute(query, (username,))
-        row = result.fetchone()
-
-        if row:
-            # user = cls(row[0], row[1], row[2])
-            user = cls(*row)
-        else:
-            user = None
-
-        connection.close()
-        return user
+        user = cls.query.filter_by(username=username).first()
 
     @classmethod
     def find_by_id(cls, _id):
-        connection = sqlite3.connect("data.db")
-        cursor = connection.cursor()
-
-        query = "SELECT * FROM users WHERE id=?"
-        # value always needs to be a tuple
-        # otherwise braces are useless
-        # (4 + 3) + 2
-        result = cursor.execute(query, (_id,))
-        row = result.fetchone()
-
-        if row:
-            # user = cls(row[0], row[1], row[2])
-            user = cls(*row)
-        else:
-            user = None
-
-        connection.close()
-        return user
+        return cls.query.filter_by(id=_id).first()
