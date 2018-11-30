@@ -1,24 +1,25 @@
 from db import db
 
 
-class ItemModel(db.Model):
+class StoreModel(db.Model):
     # sqlalchemy set up
     __tablename__ = "items"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
-    price = db.Column(db.Float(precision=2))
+    # need lazy for speed
+    items = db.relationship("ItemModel", lazy="dynamic")
 
-    store_id = db.Column(db.Integer, db.ForeignKey("stores.id"))
-    store = db.relationship("StoreModel")
-
-    def __init__(self, name, price, store_id):
+    def __init__(self, name, price):
         self.name = name
         self.price = price
-        self.store_id = store_id
 
     def json(self):
-        return {"name": self.name, "price": self.price}
+        return {
+            "name": self.name,
+            # user .all to retrieve from table cause lazy
+            "items": [item.json() for item in self.items.all()],
+        }
 
     @classmethod
     def find_by_name(cls, name):
